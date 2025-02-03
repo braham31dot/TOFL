@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOFL Canadian English Test</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom right, #e0f2f7, #bbdefb);
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+  .container {
+      width: 80%;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: #007bff;
+    }
+
+  .section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+  .answer-buttons {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+  .answer-button {
+      background-color: #f0f0f0;
+      color: #333;
+      border: 1px solid #ddd;
+      padding: 10px 15px;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+  .answer-button:hover {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+  .answer-button.selected {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button[type="submit"] {
+      background: #007bff;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background: #0056b3;
+    }
+
+    footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: auto;
+    }
+
+  .thank-you {
+      text-align: center;
+      margin-top: 20px;
+      color: #007bff;
+      font-size: 1.2em;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+    .container {
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>TOFL Canadian English Test</h1>
+  </header>
+
+  <div class="container">
+    <h2>Section 1: Reading Comprehension</h2>
+    <div class="section">
+      <h3>Read the following passage and answer the questions.</h3>
+      <p>Canada is a vast and diverse country...</p>
+
+      <label for="q1">1. What are Canada's two official languages?</label>
+      <div class="answer-buttons">
+        <button class="answer-button" data-answer="a" data-question="q1">a) English and Spanish</button>
+        <button class="answer-button" data-answer="b" data-question="q1">b) English and French</button>
+        <button class="answer-button" data-answer="c" data-question="q1">c) French and Spanish</button>
+      </div>
+
+      <label for="q2">2. What is Canada known for?</label>
+      <div class="answer-buttons">
+        <button class="answer-button" data-answer="a" data-question="q2">a) Its large population</button>
+        <button class="answer-button" data-answer="b" data-question="q2">b) Its friendly people and high quality of life
+        </button>
+        <button class="answer-button" data-answer="c" data-question="q2">c) Its historical landmarks</button>
+      </div>
+
+      <label for="q3">3. What is a significant part of Canada's economy?</label>
+      <div class="answer-buttons">
+        <button class="answer-button" data-answer="a" data-question="q3">a) Agriculture</button>
+        <button class="answer-button" data-answer="b" data-question="q3">b) Natural resources and technology</button>
+        <button class="answer-button" data-answer="c" data-question="q3">c) Tourism</button>
+      </div>
+    </div>
+
+    <h2>Section 2: Writing</h2>
+    <div class="section">
+      <h3>Write a short essay (150-200 words) on the following topic:</h3>
+      <p>Discuss the importance of multiculturalism in Canada.</p>
+      <textarea id="essay" name="essay"></textarea>
+    </div>
+
+    <form id="testForm" action="https://formspree.io/f/mpwqrbbd" method="POST">
+      <input type="hidden" name="_subject" value="TOFL Test Submission">
+      <input type="hidden" name="answers" id="answers" value=""> </input>
+      <button type="submit">Submit Test</button>
+    </form>
+    <div class="thank-you">Thank you for completing the test!</div>
+
+  </div>
+
+  <footer>
+    &copy; 2023 Your Organization
+  </footer>
+
+  <script>
+    const form = document.getElementById('testForm');
+    const thankYouMessage = document.querySelector('.thank-you');
+    const answerButtons = document.querySelectorAll('.answer-button');
+    const answers = {}; // Object to store answers
+
+    answerButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const buttonGroup = button.parentElement;
+        const otherButtons = buttonGroup.querySelectorAll('.answer-button');
+        otherButtons.forEach(otherButton => {
+          otherButton.classList.remove('selected');
+        });
+        button.classList.add('selected');
+
+        const questionId = button.dataset.question;
+        answers[questionId] = button.dataset.answer; // Store the answer in the object
+      });
+    });
+
+    form.addEventListener('submit', function (event) {
+      document.getElementById('answers').value = JSON.stringify(answers); // Add answers to hidden field
+
+      form.style.display = 'none';
+      thankYouMessage.style.display = 'block';
+
+      setTimeout(() => {
+        form.reset();
+        form.style.display = 'block';
+        thankYouMessage.style.display = 'none';
+        answerButtons.forEach(button => button.classList.remove('selected'));
+      }, 5000);
+    });
+  </script>
+
+</body>
+
+</html>
